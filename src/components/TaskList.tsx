@@ -33,7 +33,7 @@ export function TaskList() {
         ...tasks,
         createTask
       ]);
-      
+
       setNewTaskTitle('');
     }
   }
@@ -50,7 +50,7 @@ export function TaskList() {
   }
 
   function handleRemoveTask(id: number) {
-    let deleteTask = [...tasks].filter((task) => task.id != id)
+    let deleteTask = [...tasks].filter((task) => task.id !== id)
     setTasks(deleteTask);
   }
 

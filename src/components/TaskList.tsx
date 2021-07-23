@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, FormEvent } from 'react'
 
 import '../styles/tasklist.scss'
 
@@ -13,17 +13,45 @@ interface Task {
 export function TaskList() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTaskTitle, setNewTaskTitle] = useState('');
+  const id  = Math.random();
 
-  function handleCreateNewTask() {
+  function handleCreateNewTask(event: FormEvent) {
     // Crie uma nova task com um id random, não permita criar caso o título seja vazio.
+    event.preventDefault();
+
+    if (newTaskTitle == ''){
+      console.log("preencha o campo")
+    }
+    else {
+      const createTask = ({
+        id,
+        title: newTaskTitle,
+        isComplete: false,
+      });
+
+      setTasks([
+        ...tasks,
+        createTask
+      ]);
+      
+      setNewTaskTitle('');
+    }
   }
 
   function handleToggleTaskCompletion(id: number) {
     // Altere entre `true` ou `false` o campo `isComplete` de uma task com dado ID
+    let updateChecked = [...tasks].map((task) => {
+      if(task.id === id){
+        task.isComplete = !task.isComplete;
+      }
+      return task;
+    });
+    setTasks(updateChecked);
   }
 
   function handleRemoveTask(id: number) {
-    // Remova uma task da listagem pelo ID
+    let deleteTask = [...tasks].filter((task) => task.id != id)
+    setTasks(deleteTask);
   }
 
   return (
@@ -42,7 +70,7 @@ export function TaskList() {
             <FiCheckSquare size={16} color="#fff"/>
           </button>
         </div>
-      </header>
+      </header> 
 
       <main>
         <ul>
@@ -50,11 +78,11 @@ export function TaskList() {
             <li key={task.id}>
               <div className={task.isComplete ? 'completed' : ''} data-testid="task" >
                 <label className="checkbox-container">
-                  <input 
+                  <input
                     type="checkbox"
                     readOnly
                     checked={task.isComplete}
-                    onClick={() => handleToggleTaskCompletion(task.id)}
+                    onClick={() => handleToggleTaskCompletion(task.id)}               
                   />
                   <span className="checkmark"></span>
                 </label>

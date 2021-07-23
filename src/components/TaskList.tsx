@@ -19,10 +19,7 @@ export function TaskList() {
     // Crie uma nova task com um id random, não permita criar caso o título seja vazio.
     event.preventDefault();
 
-    if (newTaskTitle == ''){
-      console.log("preencha o campo")
-    }
-    else {
+    if (newTaskTitle){
       const createTask = ({
         id,
         title: newTaskTitle,
